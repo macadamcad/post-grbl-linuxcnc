@@ -1,55 +1,30 @@
-# GRBL / LinuxCNC Postprocessor for Macadam
+# GRBL / LinuxCNC Postprocessors for Macadam
 
-Source-only preview; not a qualified machine profile or a stable public API release.
-This package registers through the ordinary Macadam `cam:postprocess` plugin API.
-It exports files only; machine communication drivers are separate.
+API2 source preview, version `2.0.0-alpha.1`. Matching Rust/WASM/native builds and real UI/machine qualification remain UNRUN. This draft is not a supported stable release.
+
+Ordinary Macadam plugins that export files; machine communication drivers are separate. Source and new public declarations/documentation are MIT-licensed; no private Macadam core license is granted.
 
 ## Controller scope
 
-Preserves Macadam's legacy combined GRBL/LinuxCNC serializer for byte compatibility.
-The mapped-tool path emits `Tn M6` and `G43 Hn`; these are LinuxCNC-style instructions.
-**Stock GRBL does not support this automatic tool-change sequence.**
-The indexed A axis and `G91.1` also require controller support.
-Do not select this legacy profile for stock GRBL without reviewing every instruction.
-A controller-specific manual-change mode remains required before this can be
-advertised as a general GRBL Postprocessor.
+This package registers two distinct Postprocessors:
 
-The current profile supports millimetres, absolute XYZ, incremental XY arc
-centres, XY helices, optional indexed A and G54–G59. It does not claim continuous
-4/5-axis, inch output, coolant or counterclockwise spindle control.
-Spindle start uses M3; stop uses M5; program end uses M2.
-Unmapped tools currently produce a manual-change comment, **not a machine stop**.
-Provide a valid mapping and controller macros, or arrange safe manual changes
-outside this preview. A comment must never be mistaken for an interlock.
+- `default` / legacy alias `grblLinuxCNC`: **LinuxCNC**, mapped `Tn M6` then `G43 Hn`, G91.1 and optional indexed A. Automatic changes require a mapping. A manual option emits a change/offset-verification comment and `M0`; the operator must install the tool and verify offsets before resuming.
+- `grbl` / alias `grbl`: **stock GRBL 1.1**, XYZ only, explicit `M0` manual-change pause. No M6, G43, G91.1 or indexed A. Automatic policy fails. M0/resume behavior depends on the file sender/controller and needs qualification.
 
-## Install and use
+The old combined alias is retained for compatibility; it does not imply that GRBL supports LinuxCNC tool-changing instructions.
 
-Requires a Macadam build implementing Postprocessor plugin registration; ordinary
-released builds may not have that API yet. Download a reviewed commit, then use
-Macadam's local plugin folder installer to select this directory containing
-`plugin.json`, `index.js` and `post.js`. No npm install or network access is needed.
-The package id is `com.macadam.posts.grbl-linuxcnc`; the registered selection
-is `com.macadam.posts.grbl-linuxcnc/default`.
-Select it in CAM G-code export, configure work offset, decimal precision, positive
-feeds/RPM and library-tool-to-magazine mappings, then save/download the file.
+All supplied profiles output millimetres, absolute XYZ, incremental XY arcs/helices/full circles, G54–G59, M3/M4 spindle, M5 stop, M7/M8 coolant and M9 off, M2 end. Indexed A is declared only where supported. Machine wiring/macros must match these instructions; physical qualification is not implied.
 
-Tool numbers crossing JavaScript must use decimal strings when larger than
-9007199254740991; the host API must validate these without numeric coercion.
-This transport qualification is pending and this preview must not be used to
-claim large-slot support in an existing application build.
+## Install, configure and use
 
-## Tests
+Use a Macadam build implementing Postprocessor API2. Download a reviewed commit, extract it, and select this folder through **Plugins → Install Folder…**. No npm install or runtime network is needed. Select the Postprocessor in CAM G-code export; choose work offset, precision, feeds/RPM, direction/coolant and tool policy. Native uses the active magazine; web accepts tool mappings. Canonical decimal-string slots preserve integers above 2^53−1 through i64::MAX.
 
-Run `node --test test.mjs` (Node 20+; built-in modules only).
-These package tests verify registration, source integrity and declared controller
-instructions. They do not replace Macadam's independent 24 byte comparisons,
-two literal goldens, negative/lifecycle tests, matching WASM/native builds or UI
-selection/configuration/download/cancel qualification; all remain required.
+Automatic changes with unmapped tools fail. Manual changes use a real profile pause; the legacy unmapped-tool comment is not a stop and is unavailable as an application policy. Unsupported capabilities or unresolved operations return no downloadable partial program.
 
-## Source and license
+Read [API.md](API.md) and use [postprocessor-api.d.ts](postprocessor-api.d.ts) to author custom syntax. Bundled and third-party posts use the same public API and lifecycle. Macadam vendors exact commits/version/SHA-256 and generated package bytes for offline availability.
 
-The three plugin source files are byte-exact extractions from Macadam prototype
-`610072ce641d72bbd59e2ff635c724bd250f0844`, scoped to
-`rust/crates/cam/posts/grbl-linuxcnc/`.
-This repository contains newly authorized plugin code and documentation only.
-MIT applies to these files; it grants no license to the private Macadam core.
+## Tests and status
+
+Run `node --test test.mjs` (Node 20+, built-in modules only). Three package tests cover public registration, integrity and explicit controller policy. These do not replace real Rust byte/golden, custom-event/negative tests, matching builds or UI qualification. Those remain UNRUN in this source-only cloud lane.
+
+Only newly authorized Postprocessor package source, declarations and documentation are published here. See [LICENSE](LICENSE).
