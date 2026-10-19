@@ -412,6 +412,20 @@ module.exports = [
           {
             "line": [
               {
+                "text": "M5"
+              }
+            ]
+          },
+          {
+            "line": [
+              {
+                "text": "M9"
+              }
+            ]
+          },
+          {
+            "line": [
+              {
                 "text": "M0"
               }
             ]
@@ -771,6 +785,20 @@ module.exports = [
               },
               {
                 "text": " — load tool and verify offsets before resuming"
+              }
+            ]
+          },
+          {
+            "line": [
+              {
+                "text": "M5"
+              }
+            ]
+          },
+          {
+            "line": [
+              {
+                "text": "M9"
               }
             ]
           },

@@ -8,8 +8,8 @@ Ordinary Macadam plugins that export files; machine communication drivers are se
 
 This package registers two distinct Postprocessors:
 
-- `default` / legacy alias `grblLinuxCNC`: **LinuxCNC**, mapped `Tn M6` then `G43 Hn`, G91.1 and optional indexed A. Automatic changes require a mapping. A manual option emits a change/offset-verification comment and `M0`; the operator must install the tool and verify offsets before resuming.
-- `grbl` / alias `grbl`: **stock GRBL 1.1**, XYZ only, explicit `M0` manual-change pause. No M6, G43, G91.1 or indexed A. Automatic policy fails. M0/resume behavior depends on the file sender/controller and needs qualification.
+- `default` / legacy alias `grblLinuxCNC`: **LinuxCNC**, mapped `Tn M6` then `G43 Hn`, G91.1 and optional indexed A. Automatic changes require a mapping. A manual option emits a change/offset-verification comment, unconditional `M5`/`M9`, then `M0`; the operator must install the tool and verify offsets before resuming.
+- `grbl` / alias `grbl`: **stock GRBL 1.1**, XYZ only, unconditional `M5`/`M9` then an explicit `M0` manual-change pause. No M6, G43, G91.1 or indexed A. Automatic policy fails. M0/resume behavior depends on the file sender/controller and needs qualification.
 
 The old combined alias is retained for compatibility; it does not imply that GRBL supports LinuxCNC tool-changing instructions.
 
