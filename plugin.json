@@ -1,0 +1,11 @@
+{
+  "apiVersion": "1",
+  "capabilities": [
+    "cam:postprocess"
+  ],
+  "entry": "index.js",
+  "id": "com.macadam.posts.grbl-linuxcnc",
+  "integrity": "sha256-f76e899b792ae9008d822ab199f0b44645c3d8d2e7de1bababb1b6ddaaae8970",
+  "name": "GRBL / LinuxCNC post",
+  "version": "2.0.0-alpha.1"
+}
