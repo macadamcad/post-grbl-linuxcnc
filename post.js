@@ -557,15 +557,6 @@ module.exports = [
             ]
           }
         ],
-        "coolantMist": [
-          {
-            "line": [
-              {
-                "text": "M7"
-              }
-            ]
-          }
-        ],
         "rapid": [
           {
             "line": [

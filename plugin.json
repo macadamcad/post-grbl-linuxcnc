@@ -5,7 +5,7 @@
   ],
   "entry": "index.js",
   "id": "com.macadam.posts.grbl-linuxcnc",
-  "integrity": "sha256-d0b11d1f3f59b0bc1aff9b8710f2301b13326027654ea98dcf735ee0643d34f0",
+  "integrity": "sha256-62bfe946212f7c044a74fdbc5b2eb2ef8a12c32a627810d209342594a794b3df",
   "name": "GRBL / LinuxCNC post",
   "version": "2.0.0-alpha.1"
 }
